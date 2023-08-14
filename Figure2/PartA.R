@@ -18,7 +18,7 @@ par(oma = c(2, 1, 1, 1), mar = c(3,3,2,1), cex = (11/12), lwd = 1, cex.axis = 1.
 auc_values <- c()
 ind <- 1
 ind <-  ind + 1
-msaboost_roc <- roc(as.numeric(data$PHACT), as.factor(1 * (y == 1)))
+msaboost_roc <- roc(1 - as.numeric(data$PHACT), as.factor(1 * (y == 1)))
 plot(msaboost_roc, col = cols[ind], lwd = 2)
 text(0.5, 0.4 - (ind - 1) * 0.07, label = sprintf("PHACT = %.3f", auc(msaboost_roc)), col = cols[ind], cex = 0.9)
 
@@ -40,7 +40,7 @@ par(oma = c(2, 1, 1, 1), mar = c(3,3,2,1), cex = (11/12), lwd = 1, cex.axis = 1.
 auc_values <- c()
 ind <- 1
 ind <-  ind + 1
-msaboost_pr <- pr.curve(scores.class0 = as.numeric(data$PHACT), weights.class0 = (1 * (y == 1)), curve = TRUE)
+msaboost_pr <- pr.curve(scores.class0 = 1 - as.numeric(data$PHACT), weights.class0 = (1 * (y == 1)), curve = TRUE)
 plot(msaboost_pr, col = cols[ind], lwd = 2, main = "", auc.main = FALSE)
 text(0.5, 0.4 - (ind - 1) * 0.07, label = sprintf("PHACT = %.3f", (msaboost_pr$auc.integral)), col = cols[ind], cex = 1)
 
