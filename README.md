@@ -12,7 +12,7 @@ In Figure 2C, we present a comparative analysis between PHACTboost and MSAboost,
 
 Both Figure 2A and 2C are generated using the script "Figure_2AC.R". The script for plotting Figure 2B is named "Figure_2B.R".
 
-The data provided in the Figure2/Data folder was generated using the script "Figure2_ProduceData.R".
+The data provided in the [Figure2/Data](Figure2/Data) folder was generated using the script "Figure2_ProduceData.R".
 
 ## Figure 3
 
