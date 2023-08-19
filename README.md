@@ -4,13 +4,20 @@ This repository includes the required codes to reproduce the figures at ...
 
 ## Figure 2
 
-This figure shows the performance difference between PHACTboost, PHACT and MSAboost.
+Figure 2A illustrates the evaluation of the PHACTboost algorithm's performance across all alternative test sets, revealing the enhancements achieved over the baseline PHACT model.
 
-A. The performance of the PHACTboost algorithm was evaluated over the complete set of variations in the test set. B. Comparison of PHACTboost results over full test set, test set excluding same positions with the training set, and test set excluding the same proteins as training set. C. Feature Importance – Shapley Values for PHACTboost algorithm. D. Comparison of PHACTboost with MSAboost which corresponds to the same machine learning algorithm with only MSA-based features over the whole dataset. E. Comparison of PHACTboost with MSAboost over the hard cases.
+Figure 2B is dedicated to exploring Feature Importance – Shapley Values for the PHACTboost Algorithm.
+
+In Figure 2C, we present a comparative analysis between PHACTboost and MSAboost, both employing the same machine learning algorithm but differing in their feature sets. This comparison was conducted across the entire dataset and included all alternative test sets.
+
+Figure 2A and 2C are plotted by using "Figure_2AC.R".
+The code to plot 2C is names as "Figure_2B.R".
+
+The data given in Figure2/Data folder is produced by using "Figure2_ProduceData.R".
 
 ## Figure 3
 
-Figure 3 shows AUROC comparisons of PHACTboost and tools reported in dbNSFP across TS1, TS2, TS3, TS4 and TS5, respectively. 
+Figure 3A, 3B, 3C, 3D, 3E show AUROC comparisons of PHACTboost and tools reported in dbNSFP across TS1, TS2, TS3, TS4 and TS5, respectively. 
 
 Part A, B, C, D and E can be plotted by using "Figure3_Comparison_TS.R".
 The required files are given in the same folder.
