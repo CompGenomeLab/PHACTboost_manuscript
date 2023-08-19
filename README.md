@@ -10,7 +10,7 @@ A. The performance of the PHACTboost algorithm was evaluated over the complete s
 
 ## Figure 3
 
-Figure 3 shows AUPR comparisons of PHACTboost and tools reported in dbNSFP across TS1, TS2, TS3, TS4 and TS5, respectively. 
+Figure 3 shows AUROC comparisons of PHACTboost and tools reported in dbNSFP across TS1, TS2, TS3, TS4 and TS5, respectively. 
 
 Part A, B, C, D and E can be plotted by using "Figure3_Comparison_TS.R".
 The required files are given in the same folder.
