@@ -1,0 +1,99 @@
+library(PRROC)
+library(AUC)
+
+comp <- "PHACT"
+# comp <- "MSAboost"
+
+ts1 <- read.csv("Data/Figure2_TS1.csv")
+ts2 <- read.csv("Data/Figure2_TS2.csv")
+ts3 <- read.csv("Data/Figure2_TS3.csv")
+ts4 <- read.csv("Data/Figure2_TS4.csv")
+ts5 <- read.csv("Data/Figure2_TS5.csv")
+
+y1 <- as.numeric(ts1$variant_info)
+y2 <- as.numeric(ts2$variant_info)
+y3 <- as.numeric(ts3$variant_info)
+y4 <- as.numeric(ts4$variant_info)
+y5 <- as.numeric(ts5$variant_info)
+
+pb1 <- as.numeric(ts1$PHACTboost)
+pb2 <- as.numeric(ts2$PHACTboost)
+pb3 <- as.numeric(ts3$PHACTboost)
+pb4 <- as.numeric(ts4$PHACTboost)
+pb5 <- as.numeric(ts5$PHACTboost)
+
+mb1 <- as.numeric(ts1$MSAboost)
+mb2 <- as.numeric(ts2$MSAboost)
+mb3 <- as.numeric(ts3$MSAboost)
+mb4 <- as.numeric(ts4$MSAboost)
+mb5 <- as.numeric(ts5$MSAboost)
+
+values <- c()
+pb1_roc <- auc(roc(pb1, as.factor(1 * (y1 == 1))))
+mb1_roc <- auc(roc(mb1, as.factor(1 * (y1 == 1))))
+values <- rbind(values, c(pb1_roc, mb1_roc))
+pb2_roc <- auc(roc(pb2, as.factor(1 * (y2 == 1))))
+mb2_roc <- auc(roc(mb2, as.factor(1 * (y2 == 1))))
+values <- rbind(values, c(pb2_roc, mb2_roc))
+pb3_roc <- auc(roc(pb3, as.factor(1 * (y3 == 1))))
+mb3_roc <- auc(roc(mb3, as.factor(1 * (y3 == 1))))
+values <- rbind(values, c(pb3_roc, mb3_roc))
+pb4_roc <- auc(roc(pb4, as.factor(1 * (y4 == 1))))
+mb4_roc <- auc(roc(mb4, as.factor(1 * (y4 == 1))))
+values <- rbind(values, c(pb4_roc, mb4_roc))
+pb5_roc <- auc(roc(pb5, as.factor(1 * (y5 == 1))))
+mb5_roc <- auc(roc(mb5, as.factor(1 * (y5 == 1))))
+values <- rbind(values, c(pb5_roc, mb5_roc))
+
+values <- t(values)
+values <- as.data.frame(values)
+colnames(values) <- c("TS1", "TS2", "TS3", "TS4", "TS5")
+
+if (comp = "PHACT"){
+    rownames(values_pr) <- c("PHACTboost", "PHACT")
+} else if (comp = "MSAboost") {
+    rownames(values_pr) <- c("PHACTboost", "MSAboost")
+}
+
+values_pr <- c()
+pp1 <- pr.curve(scores.class0 = pb1, weights.class0 = (1 * (y1 == 1)), curve = TRUE)
+pp2 <- pr.curve(scores.class0 = mb1, weights.class0 = (1 * (y1 == 1)), curve = TRUE)
+values_pr <- rbind(values_pr, c(pp1$auc.integral, pp2$auc.integral))
+pp3 <- pr.curve(scores.class0 = pb2, weights.class0 = (1 * (y2 == 1)), curve = TRUE)
+pp4 <- pr.curve(scores.class0 = mb2, weights.class0 = (1 * (y2 == 1)), curve = TRUE)
+values_pr <- rbind(values_pr, c(pp3$auc.integral, pp4$auc.integral))
+pp5 <- pr.curve(scores.class0 = pb3, weights.class0 = (1 * (y3 == 1)), curve = TRUE)
+pp6 <- pr.curve(scores.class0 = mb3, weights.class0 = (1 * (y3 == 1)), curve = TRUE)
+values_pr <- rbind(values_pr, c(pp5$auc.integral, pp6$auc.integral))
+pp7 <- pr.curve(scores.class0 = pb4, weights.class0 = (1 * (y4 == 1)), curve = TRUE)
+pp8 <- pr.curve(scores.class0 = mb4, weights.class0 = (1 * (y4 == 1)), curve = TRUE)
+values_pr <- rbind(values_pr, c(pp7$auc.integral, pp8$auc.integral))
+pp9 <- pr.curve(scores.class0 = pb5, weights.class0 = (1 * (y5 == 1)), curve = TRUE)
+pp10 <- pr.curve(scores.class0 = mb5, weights.class0 = (1 * (y5 == 1)), curve = TRUE)
+values_pr <- rbind(values_pr, c(pp9$auc.integral, pp10$auc.integral))
+
+values_pr <- t(values_pr)
+values_pr <- as.data.frame(values_pr)
+colnames(values_pr) <- c("TS1", "TS2", "TS3", "TS4", "TS5")
+
+if (comp = "PHACT"){
+    rownames(values_pr) <- c("PHACTboost", "PHACT")
+} else if (comp = "MSAboost") {
+    rownames(values_pr) <- c("PHACTboost", "MSAboost")
+}
+
+cols <- c("#5B72C7", "#DAA87B")
+
+pdf(file = sprintf("ROC_%s.pdf", comp), width = 9, height = 5)
+barplot(as.matrix(values), col = cols, beside = TRUE, ylim = c(0,1.3), yaxt = "n")
+legend(12, 1.25, legend = rownames(values), fill = cols, bty = "n", y.intersp = 0.7)
+axis(side = 2, at = seq(0,1,0.2), labels = sprintf("%.2f",seq(0,1,0.2)), las = 2)
+mtext(side = 2, text = "AUROC", line = 3, cex = 1)
+dev.off()
+
+pdf(file = sprintf("PR_%s.pdf", comp), width = 9, height = 5)
+barplot(as.matrix(values_pr), col = cols, beside = TRUE, ylim = c(0,1.3), yaxt = "n")
+legend(12, 1.25, legend = rownames(values_pr), fill = cols, bty = "n", y.intersp = 0.7)
+axis(side = 2, at = seq(0,1,0.2), labels = sprintf("%.2f",seq(0,1,0.2)), las = 2)
+mtext(side = 2, text = "AUPR", line = 3, cex = 1)
+dev.off()
