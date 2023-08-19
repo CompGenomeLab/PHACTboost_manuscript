@@ -1,6 +1,6 @@
 # PHACTboost_manuscript
 
-This repository includes the required codes to reproduce the figures at PHACTboost manuscript.
+This repository contains the necessary codes to reproduce the figures presented in the PHACTboost manuscript. Each figure's code and related data are provided in their respective named folders.
 
 ## Figure 2
 
