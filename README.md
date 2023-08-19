@@ -10,7 +10,12 @@ A. The performance of the PHACTboost algorithm was evaluated over the complete s
 
 ## Figure 3
 
-A. ROC and PR curve comparisons of PHACTboost and other 40 tools reported in dbNSFP. B. ROC and PR curve comparisons of PHACTboost and other 39 tools reported in dbNSFP over hard cases. One tool is discarded since dbNSFP does not report sufficient number of variations. C. ROC and PR curve comparisons of PHACTboost and other 39 tools reported in dbNSFP over test set which includes different positions than training set. D. ROC and PR curve comparisons of PHACTboost and other 39 tools reported in dbNSFP over test set which includes different proteins than training set.
+Figure 3 shows AUPR comparisons of PHACTboost and tools reported in dbNSFP across TS1, TS2, TS3, TS4 and TS5, respectively. 
+
+Part A, B, C, D and E can be plotted by using "Figure3_Comparison_TS.R".
+The required files are given in the same folder.
+
+The data given in Figure3/ folder is produced by using "Figure3_ProduceData.R".
 
 ## Figure 4
 
