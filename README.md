@@ -5,6 +5,7 @@ This repository includes the required codes to reproduce the figures at ...
 ## Figure 2
 
 This figure shows the performance difference between PHACTboost, PHACT and MSAboost.
+
 A. The performance of the PHACTboost algorithm was evaluated over the complete set of variations in the test set. B. Comparison of PHACTboost results over full test set, test set excluding same positions with the training set, and test set excluding the same proteins as training set. C. Feature Importance – Shapley Values for PHACTboost algorithm. D. Comparison of PHACTboost with MSAboost which corresponds to the same machine learning algorithm with only MSA-based features over the whole dataset. E. Comparison of PHACTboost with MSAboost over the hard cases.
 
 ## Figure 3
