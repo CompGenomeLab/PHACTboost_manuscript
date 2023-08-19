@@ -22,7 +22,7 @@ To generate Part A, B, C, D, and E, you can use the script "Figure3_Comparison_T
 
 The necessary files are provided in the Figure2/Data folder.
 
-The data found in the Figure3/ folder was generated using the script "Figure3_ProduceData.R.
+The data found in the [Figure3/Data](Figure3/Data) folder was generated using the script "Figure3_ProduceData.R.
 
 ## Figure 4
 
