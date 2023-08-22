@@ -26,7 +26,11 @@ The data found in the [Figure3/Data](Figure3/Data) folder was generated using th
 
 ## Figure 4
 
-A. AUROC difference between PHACTboost and EVE across all alternative test sets. B. AUROC difference between PHACTboost and CPT-1 across all alternative test sets C. Protein-by-protein comparison of PHACTboost with EVE over 60 proteins with at least 3 neutral and 3 pathogenic variations. D. Comparison of average Spearman correlation between PHACTboost and DMS results with the average Spearman correlation between other tools and DMS data.
+Figure 4A demonstrates the AUROC difference between PHACTboost and EVE across all alternative test sets. Similarly, Figure 4B displays the AUROC levels of PHACTboost and CPT-1 across all alternative test sets.
+
+In Part C, we present a protein-by-protein comparison of PHACTboost with EVE over 60 proteins, each containing at least 3 neutral and 3 pathogenic variations.
+
+Finally, Part D is dedicated to comparing the average Spearman correlation between PHACTboost and DMS results with the average Spearman correlation between other tools and DMS data.
 
 The data found in the [Figure4/Data](Figure4/Data) folder was generated using the script "Figure4_ProduceData.R.
 
