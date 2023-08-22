@@ -28,5 +28,6 @@ The data found in the [Figure3/Data](Figure3/Data) folder was generated using th
 
 A. AUROC and AUPR difference between PHACTboost and EVE, CPT-1, VARITY, gMVP and ENVISION over the whole test set. B. AUROC and AUPR difference between PHACTboost and EVE, CPT-1, VARITY, gMVP and ENVISION over hard cases. C. Protein-by-protein comparison of PHACTboost with EVE over 60 proteins with at least 3 neutral and 3 pathogenic variations. D. Comparison of average Spearman correlation between PHACTboost and DMS results with the average Spearman correlation between other tools and DMS data.
 
+The data found in the [Figure4/Data](Figure4/Data) folder was generated using the script "Figure4_ProduceData.R.
 
 
