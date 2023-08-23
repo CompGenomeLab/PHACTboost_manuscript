@@ -1,9 +1,6 @@
 library(PRROC)
 library(AUC)
 
-comp <- "PHACT"
-# comp <- "MSAboost"
-
 ts1 <- read.csv("Data/Figure2_TS1.csv")
 ts2 <- read.csv("Data/Figure2_TS2.csv")
 ts3 <- read.csv("Data/Figure2_TS3.csv")
@@ -28,6 +25,13 @@ mb3 <- as.numeric(ts3$MSAboost)
 mb4 <- as.numeric(ts4$MSAboost)
 mb5 <- as.numeric(ts5$MSAboost)
 
+p1 <- as.numeric(ts1$PHACT)
+p2 <- as.numeric(ts2$PHACT)
+p3 <- as.numeric(ts3$PHACT)
+p4 <- as.numeric(ts4$PHACT)
+p5 <- as.numeric(ts5$PHACT)
+
+
 values <- c()
 pb1_roc <- auc(roc(pb1, as.factor(1 * (y1 == 1))))
 mb1_roc <- auc(roc(mb1, as.factor(1 * (y1 == 1))))
@@ -48,12 +52,8 @@ values <- rbind(values, c(pb5_roc, mb5_roc))
 values <- t(values)
 values <- as.data.frame(values)
 colnames(values) <- c("TS1", "TS2", "TS3", "TS4", "TS5")
+rownames(values) <- c("PHACTboost", "MSAboost")
 
-if (comp = "PHACT"){
-    rownames(values_pr) <- c("PHACTboost", "PHACT")
-} else if (comp = "MSAboost") {
-    rownames(values_pr) <- c("PHACTboost", "MSAboost")
-}
 
 values_pr <- c()
 pp1 <- pr.curve(scores.class0 = pb1, weights.class0 = (1 * (y1 == 1)), curve = TRUE)
@@ -75,25 +75,77 @@ values_pr <- rbind(values_pr, c(pp9$auc.integral, pp10$auc.integral))
 values_pr <- t(values_pr)
 values_pr <- as.data.frame(values_pr)
 colnames(values_pr) <- c("TS1", "TS2", "TS3", "TS4", "TS5")
+rownames(values_pr) <- c("PHACTboost", "MSAboost")
 
-if (comp = "PHACT"){
-    rownames(values_pr) <- c("PHACTboost", "PHACT")
-} else if (comp = "MSAboost") {
-    rownames(values_pr) <- c("PHACTboost", "MSAboost")
-}
+values_mb_roc <- values
+values_mb_pr <- values_pr
+
+values <- c()
+pb1_roc <- auc(roc(pb1, as.factor(1 * (y1 == 1))))
+p1_roc <- auc(roc(p1, as.factor(1 * (y1 == 1))))
+values <- rbind(values, c(pb1_roc, p1_roc))
+pb2_roc <- auc(roc(pb2, as.factor(1 * (y2 == 1))))
+p2_roc <- auc(roc(p2, as.factor(1 * (y2 == 1))))
+values <- rbind(values, c(pb2_roc, p2_roc))
+pb3_roc <- auc(roc(pb3, as.factor(1 * (y3 == 1))))
+p3_roc <- auc(roc(p3, as.factor(1 * (y3 == 1))))
+values <- rbind(values, c(pb3_roc, p3_roc))
+pb4_roc <- auc(roc(pb4, as.factor(1 * (y4 == 1))))
+p4_roc <- auc(roc(p4, as.factor(1 * (y4 == 1))))
+values <- rbind(values, c(pb4_roc, p4_roc))
+pb5_roc <- auc(roc(pb5, as.factor(1 * (y5 == 1))))
+p5_roc <- auc(roc(p5, as.factor(1 * (y5 == 1))))
+values <- rbind(values, c(pb5_roc, p5_roc))
+
+values <- t(values)
+values <- as.data.frame(values)
+colnames(values) <- c("TS1", "TS2", "TS3", "TS4", "TS5")
+rownames(values) <- c("PHACTboost", "PHACT")
+
+
+values_pr <- c()
+pp1 <- pr.curve(scores.class0 = pb1, weights.class0 = (1 * (y1 == 1)), curve = TRUE)
+pp2 <- pr.curve(scores.class0 = p1, weights.class0 = (1 * (y1 == 1)), curve = TRUE)
+values_pr <- rbind(values_pr, c(pp1$auc.integral, pp2$auc.integral))
+pp3 <- pr.curve(scores.class0 = pb2, weights.class0 = (1 * (y2 == 1)), curve = TRUE)
+pp4 <- pr.curve(scores.class0 = p2, weights.class0 = (1 * (y2 == 1)), curve = TRUE)
+values_pr <- rbind(values_pr, c(pp3$auc.integral, pp4$auc.integral))
+pp5 <- pr.curve(scores.class0 = pb3, weights.class0 = (1 * (y3 == 1)), curve = TRUE)
+pp6 <- pr.curve(scores.class0 = p3, weights.class0 = (1 * (y3 == 1)), curve = TRUE)
+values_pr <- rbind(values_pr, c(pp5$auc.integral, pp6$auc.integral))
+pp7 <- pr.curve(scores.class0 = pb4, weights.class0 = (1 * (y4 == 1)), curve = TRUE)
+pp8 <- pr.curve(scores.class0 = p4, weights.class0 = (1 * (y4 == 1)), curve = TRUE)
+values_pr <- rbind(values_pr, c(pp7$auc.integral, pp8$auc.integral))
+pp9 <- pr.curve(scores.class0 = pb5, weights.class0 = (1 * (y5 == 1)), curve = TRUE)
+pp10 <- pr.curve(scores.class0 = p5, weights.class0 = (1 * (y5 == 1)), curve = TRUE)
+values_pr <- rbind(values_pr, c(pp9$auc.integral, pp10$auc.integral))
+
+values_pr <- t(values_pr)
+values_pr <- as.data.frame(values_pr)
+colnames(values_pr) <- c("TS1", "TS2", "TS3", "TS4", "TS5")
+rownames(values_pr) <- c("PHACTboost", "PHACT")
+
+
+values <- rbind(values, values_mb_roc)
+values_pr <- rbind(values_pr, values_mb_pr)
+values <- values[-3,]
+values_pr <- values_pr[-3,]
 
 cols <- c("#5B72C7", "#DAA87B")
+cols <- c("darkblue", "darkcyan", "chocolate1")
+cols <- c("#21457A", "darkcyan", "chocolate1")
 
-pdf(file = sprintf("ROC_%s.pdf", comp), width = 9, height = 5)
+pdf(file = "Figure2_ROC.pdf", width = 9, height = 5)
 barplot(as.matrix(values), col = cols, beside = TRUE, ylim = c(0,1.3), yaxt = "n")
-legend(12, 1.25, legend = rownames(values), fill = cols, bty = "n", y.intersp = 0.7)
+legend(17, 1.25, legend = rownames(values), fill = cols, bty = "n", y.intersp = 0.7)
 axis(side = 2, at = seq(0,1,0.2), labels = sprintf("%.2f",seq(0,1,0.2)), las = 2)
 mtext(side = 2, text = "AUROC", line = 3, cex = 1)
 dev.off()
 
-pdf(file = sprintf("PR_%s.pdf", comp), width = 9, height = 5)
+pdf(file = "Figure2_PR.pdf", width = 9, height = 5)
 barplot(as.matrix(values_pr), col = cols, beside = TRUE, ylim = c(0,1.3), yaxt = "n")
-legend(12, 1.25, legend = rownames(values_pr), fill = cols, bty = "n", y.intersp = 0.7)
+legend(17, 1.25, legend = rownames(values_pr), fill = cols, bty = "n", y.intersp = 0.7)
 axis(side = 2, at = seq(0,1,0.2), labels = sprintf("%.2f",seq(0,1,0.2)), las = 2)
 mtext(side = 2, text = "AUPR", line = 3, cex = 1)
 dev.off()
+
