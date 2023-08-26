@@ -1,11 +1,11 @@
 library(PRROC)
 library(AUC)
 
-ts1 <- read.csv("Data/Figure2_TS1.csv")
-ts2 <- read.csv("Data/Figure2_TS2.csv")
-ts3 <- read.csv("Data/Figure2_TS3.csv")
-ts4 <- read.csv("Data/Figure2_TS4.csv")
-ts5 <- read.csv("Data/Figure2_TS5.csv")
+ts1 <- read.csv("/Users/nurdankuru/Desktop/Figures/Data/Figure2_TS1.csv")
+ts2 <- read.csv("/Users/nurdankuru/Desktop/Figures/Data/Figure2_TS2.csv")
+ts3 <- read.csv("/Users/nurdankuru/Desktop/Figures/Data/Figure2_TS3.csv")
+ts4 <- read.csv("/Users/nurdankuru/Desktop/Figures/Data/Figure2_TS4.csv")
+ts5 <- read.csv("/Users/nurdankuru/Desktop/Figures/Data/Figure2_TS5.csv")
 
 y1 <- as.numeric(ts1$variant_info)
 y2 <- as.numeric(ts2$variant_info)
@@ -25,11 +25,11 @@ mb3 <- as.numeric(ts3$MSAboost)
 mb4 <- as.numeric(ts4$MSAboost)
 mb5 <- as.numeric(ts5$MSAboost)
 
-p1 <- as.numeric(ts1$PHACT)
-p2 <- as.numeric(ts2$PHACT)
-p3 <- as.numeric(ts3$PHACT)
-p4 <- as.numeric(ts4$PHACT)
-p5 <- as.numeric(ts5$PHACT)
+p1 <- 1-as.numeric(ts1$PHACT)
+p2 <- 1-as.numeric(ts2$PHACT)
+p3 <- 1-as.numeric(ts3$PHACT)
+p4 <- 1-as.numeric(ts4$PHACT)
+p5 <- 1-as.numeric(ts5$PHACT)
 
 
 values <- c()
