@@ -137,7 +137,7 @@ cols <- c("#21457A", "darkcyan", "chocolate1")
 
 pdf(file = "Figure2_ROC.pdf", width = 9, height = 5)
 barplot(as.matrix(values), col = cols, beside = TRUE, ylim = c(0,1.3), yaxt = "n")
-legend(17, 1.25, legend = rownames(values), fill = cols, bty = "n", y.intersp = 0.7)
+# legend(17, 1.25, legend = rownames(values), fill = cols, bty = "n", y.intersp = 0.7)
 axis(side = 2, at = seq(0,1,0.2), labels = sprintf("%.2f",seq(0,1,0.2)), las = 2)
 mtext(side = 2, text = "AUROC", line = 3, cex = 1)
 dev.off()
