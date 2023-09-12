@@ -15,23 +15,7 @@ for (index in 1:length(ids)){
   load("Training.RData")
 
   # Load input features data
-  if (gene=="MSH2"){
-    load(sprintf("/Users/nurdankuru/%s.RData", id))
-  } else if (gene=="A4"){
-    load(sprintf("/Users/nurdankuru/%s.RData", id))
-  } else if (gene=="SYUA"){
-    load(sprintf("/Users/nurdankuru/%s.RData", id))
-  } else if (gene=="VKOR"){
-    load(sprintf("/Users/nurdankuru/%s.RData", id))
-  } else if (gene=="PTEN"){
-    load(sprintf("/Users/nurdankuru/%s.RData", id))
-  } else if (gene=="BRCA1"){
-    load(sprintf("/Users/nurdankuru/%s.RData", id))
-  } else if (gene=="ADRB2"){
-    load(sprintf("/Users/nurdankuru/%s.RData", id))
-  } else if (gene=="TP53"){
-    load(sprintf("/Users/nurdankuru/%s.RData", id))
-  }
+  load(sprintf("/Users/nurdankuru/%s.RData", id))
   
   add_pos <- matrix(0, length(data$UNIPROTKB), 1)
   add_snp <- matrix(0, length(data$UNIPROTKB), 1)
