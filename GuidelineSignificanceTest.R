@@ -3,14 +3,14 @@ library(stringr)
 library(readxl)
 library(dplyr)
 
-clinvar_data <- "/Users/nurdankuru/Desktop/COEVboost2/variant_summary.txt"
+clinvar_data <- "variant_summary.txt"
 clinvar_data <- fread(file = clinvar_data, sep = "\t", header = T, data.table = F)
 clinvar_data_38 <- clinvar_data[clinvar_data$Assembly == "GRCh38", ]
 clinvar_data_38 <- clinvar_data_38[clinvar_data_38$Type == "single nucleotide variant", ]
 clinvar_data_38$chr_vars <- paste0(clinvar_data_38$Chromosome, "-", clinvar_data_38$Start, clinvar_data_38$ReferenceAlleleVCF, ">", clinvar_data_38$AlternateAlleleVCF)
 
-load("/Users/nurdankuru/Desktop/PHACTboost_August/PHACTboost_GnomADSHARED_TRAIN_with_phact_vars_with_0_CountNodes_3/TestSet.RData")
-load("/Users/nurdankuru/Desktop/PHACTboost_August/PHACTboost_GnomADSHARED_TRAIN_with_phact_vars_with_0_CountNodes_3/lightgbm_replication_1_prediction.RData")
+load("TestSet.RData")
+load("lightgbm_replication_1_prediction.RData")
 test <- cbind(prediction$test_prediction, test)
 
 test <- test[which(test$variant_info==1),]
