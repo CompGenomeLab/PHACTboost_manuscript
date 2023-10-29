@@ -25,23 +25,23 @@ for (ind in 1:length(genes)){
   gene <- genes[ind]
   id <- ids[ind]
   
-  load(sprintf("Data/PHACTboostPred/PHACTboost_%s.RData", id))
+  load(sprintf("Data/PHACTboost_Results/PHACTboost_%s.RData", id))
   phactboost <- data
   rm(data)
-  load(sprintf("Data/EVE_Pred/%s.RData", id))
+  load(sprintf("Data/EVE_Results/%s.RData", id))
   eve <- data
   rm(data)
-  load(sprintf("Data/REVEL_Pred/%s.RData", id))
+  load(sprintf("Data/REVEL_Results/%s.RData", id))
   revel <- sub
   revel <- as.data.frame(revel)
   revel$label <- matrix(0, length(revel$V1), 1)
   revel$label[which(revel$V3>0.5)] <- "pathogenic"
   revel$label[which(revel$V3<0.5)] <- "neutral"
   rm(sub)
-  load(sprintf("Data/AlphaMissense_Pred/%s.RData", id))
+  load(sprintf("Data/AlphaMissense_Results/%s.RData", id))
   alphamis <- sub
   rm(sub)
-  cpt1 <- read.csv(sprintf("Data/CPT1_Pred/%s_HUMAN.csv", gene))
+  cpt1 <- read.csv(sprintf("Data/CPT1_Results/%s_HUMAN.csv", gene))
   
   revel_var <- revel[,1]
   vect_r <- c()
