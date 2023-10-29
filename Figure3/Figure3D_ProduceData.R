@@ -1,4 +1,5 @@
-rm(list=ls())
+type <- 1
+# 0 if Hard Cases
 
 library(lightgbm)
 library(AUC)
@@ -162,8 +163,22 @@ for (ind in 1:length(genes)){
   if (length(ii)>0){
     comb <- comb[-ii,]
   }
-  
-  save(comb, file = sprintf("DMS_All_%s_%s.RData", gene, id))
+
+  if (type==0){
+    keep <- c()
+    labels <- cbind(comb$EVE_Label, comb$REVEL_Label, comb$AlphaMissense_Label, comb$CPT1_Label)
+    for (i in 1:length(comb$gene)){
+       labs <- labels[i, ]
+       nets <- length(unique(c(grep("eutral", labs), grep("enign", labs))))
+       pats <- length(unique(c(grep("athogen", labs))))
+    
+       if (nets==2 && pats==2){
+          keep <- c(keep, i)
+      }
+     }
+     comb <- comb[keep,]
+  }
+  save(comb, file = sprintf("DMS_%s_%s.RData", gene, id))
   
   rm(dms, com, comb, eve, phactboost, revel, cpt1)
 }
