@@ -1,10 +1,9 @@
-![image](https://github.com/CompGenomeLab/PHACTboost_manuscript/assets/68369488/88137622-7184-4100-8f69-5acfd38ce206)![image](https://github.com/CompGenomeLab/PHACTboost_manuscript/assets/68369488/dc1fef55-a65d-427f-a43b-116d61a5279a)# PHACTboost_manuscript
-
 This repository contains the necessary codes to reproduce the figures presented in the PHACTboost manuscript. Each figure's code and related data are provided in their respective named folders.
 
 ## PHACTboost_Model
 
 This folder contains the PHACTboost model and all the variants in TS1-5, which are alternative test sets used in the manuscript. The definition of these test sets are given below:
+
 ![image](https://github.com/CompGenomeLab/PHACTboost_manuscript/assets/68369488/4614cbcf-6900-4506-b523-f56f8ad2b96a)
 
 
