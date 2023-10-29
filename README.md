@@ -2,6 +2,10 @@
 
 This repository contains the necessary codes to reproduce the figures presented in the PHACTboost manuscript. Each figure's code and related data are provided in their respective named folders.
 
+## PHACTboost_Model
+
+This folder contains the PHACTboost model and all the variants in TS1-5, which are alternative test sets used in the manuscript.
+
 ## Figure 1
 
 Figure 1C illustrates the evaluation of the PHACTboost algorithm's performance across all alternative test sets, revealing the enhancements achieved over the baseline PHACT model, and two alternative models MSAboost and TREEboost. Both MSAboost and TREEboost employs the same machine learning algorithm but differing in their feature sets.
@@ -34,6 +38,6 @@ Finally, Part D is dedicated to comparing the average Spearman correlation betwe
 
 The data found in the [Figure3/Data](Figure3/Data) folder was generated using the script "Figure3_ProduceData.R.
 
-## PHACTboost_Model
 
-This folder contains the PHACTboost model and all the variants in TS1-5, which are alternative test sets used in the manuscript.
+
+
