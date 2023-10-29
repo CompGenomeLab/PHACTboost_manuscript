@@ -1,0 +1,3 @@
+This folder includes the model and predictions for TREEboost.
+
+We designed TREEboost, a model based on both the MSA and tree-based features, as a second alternative approach to highlight the importance of PHACT-related features and features of ancestral reconstruction.
