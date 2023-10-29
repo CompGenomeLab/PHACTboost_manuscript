@@ -1,3 +1,3 @@
 This folder includes the model and predictions of MSAboost.
 
-MSAboost uses only MSA-based features while TREEboost uses both MSA- and tree-based features. 
+To examine the contributions of features of ancestral reconstruction and PHACT-related features, we compared the performance of PHACTboost with MSAboost which is a model that relied only on MSA-based features.
