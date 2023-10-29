@@ -33,14 +33,13 @@ The data found in the [Figure2/Data](Figure2/Data) folder was generated using th
 
 ## Figure 3
 
-Figure 3A demonstrates the AUROC difference between PHACTboost and EVE across all alternative test sets. Similarly, Figure 3B displays the AUROC levels of PHACTboost and CPT-1 across all alternative test sets.
 
-In Part C, we present a protein-by-protein comparison of PHACTboost with EVE over 60 proteins, each containing at least 3 neutral and 3 pathogenic variations.
+Figures 3A, 3B, and 3C illustrate the AUROC difference between PHACTboost and AlphaMissense, EVE, and CPT-1 across all alternative test sets, respectively. You can find the code to produce these results, along with AUPR comparison, in 'Figure3A_C.R.'
 
-Finally, Part D is dedicated to comparing the average Spearman correlation between PHACTboost and DMS results with the average Spearman correlation between other tools and DMS data.
+Figure 3D compares the average Spearman correlation between PHACTboost and DMS results with other tools and DMS data, encompassing all variants and hard cases (cases with conflicting pathogenicity predictions). You can access the code to reproduce these results in 'Figure3D.R.'
 
-The data found in the [Figure3/Data](Figure3/Data) folder was generated using the script "Figure3_ProduceData.R.
+In Figure 3E, a Chi-square test examines whether there is a significant difference between pathogenic variants mislabeled by PHACTboost and others in terms of their submission to ClinVar, following ACMG guidelines. The code for testing this significance is available as 'Figure3E.R.'
 
+Figure 3F highlights a pathogenic variation mislabeled by PHACTboost due to a lack of consideration for coevolution. The code for generating the MSA and phylogenetic tree plots can be found in 'Figure3F.R.'
 
-
-
+The data in the 'Figure3/Data' folder was generated using the script 'Figure3_ProduceData.R.'
