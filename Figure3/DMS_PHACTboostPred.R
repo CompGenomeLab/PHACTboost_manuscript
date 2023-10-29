@@ -7,6 +7,7 @@ genes <- c("MSH2", "A4", "SYUA", "VKOR", "PTEN",
          "BRCA1", "ADRB2", "TP53")
 ids <- c("P43246", "P05067", "P37840", "Q9BQB6",
           "P60484", "P38398", "P07550", "P04637")
+
 for (index in 1:length(ids)){
   id <- ids[index]
   gene <- genes[index]
