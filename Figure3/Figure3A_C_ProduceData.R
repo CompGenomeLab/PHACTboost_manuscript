@@ -13,8 +13,10 @@ ts4 <- read.csv("../PHACTboost_Model/TS4.csv")
 ts5 <- read.csv("../PHACTboost_Model/TS5.csv")
 
 data_main <- cbind(phactboost$variant_info, phactboost$PHACTboost_Score,
-                   phactboost$PHACT_Score, alphamissense$AlphaMissense_Score, eve$EVE_Score,
-                   cpt1$CPT1_Score, phactboost$prot_vars)
+                   phactboost$PHACT_Score, 
+                   alphamissense$AlphaMissense[match(phactboost$prot_vars, alphamissense$prot_vars)], 
+                   eve$EVE[match(phactboost$prot_vars, eve$prot_vars)],
+                   cpt1$CPT1[match(phactboost$prot_vars, cpt1$prot_vars)], phactboost$prot_vars)
 
 data_main <- as.data.frame(data_main)
 colnames(data_main) <- c("variant_info", "PHACTboost", "PHACT", "AlphaMissense", "EVE", 
