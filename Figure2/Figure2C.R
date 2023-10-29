@@ -29,8 +29,8 @@ for (var in vars){
   ref <- substr(rem, nchar(rem), nchar(rem))
   pos <- as.numeric(substr(rem, 1, (nchar(rem)-1)))
   
-  file_nwk <- sprintf("/Users/nurdankuru/%s.treefile", id)
-  file_fasta <- sprintf("/Users/nurdankuru/%s_MaskedMSA.fasta", id)
+  file_nwk <- sprintf("Data/%s.treefile", id)
+  file_fasta <- sprintf("Data/%s_MaskedMSA.fasta", id)
   
   chosen_pos <- c(pos, pos)
   
