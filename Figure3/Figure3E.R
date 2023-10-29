@@ -9,10 +9,7 @@ clinvar_data_38 <- clinvar_data[clinvar_data$Assembly == "GRCh38", ]
 clinvar_data_38 <- clinvar_data_38[clinvar_data_38$Type == "single nucleotide variant", ]
 clinvar_data_38$chr_vars <- paste0(clinvar_data_38$Chromosome, "-", clinvar_data_38$Start, clinvar_data_38$ReferenceAlleleVCF, ">", clinvar_data_38$AlternateAlleleVCF)
 
-load("TestSet.RData")
-load("lightgbm_replication_1_prediction.RData")
-test <- cbind(prediction$test_prediction, test)
-
+test <- read.csv("../PHACTboost_Model/PHACTboost_TestPrediction.csv")
 test <- test[which(test$variant_info==1),]
 
 db <- grep(";", test$chr_vars)
@@ -44,6 +41,7 @@ test <- rbind(test, test2)
 
 notfound_pat <- intersect(which(test$variant_info==1), which(test$`prediction$test_prediction`<0.5))
 test_nf <- test[notfound_pat,]
+test <- test[-notfound_pat,]
 
 data1 <- as.numeric(table(test$Guideline))
 data2 <-  as.numeric(table(test_nf$Guideline))
