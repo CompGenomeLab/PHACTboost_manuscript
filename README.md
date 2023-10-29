@@ -4,9 +4,8 @@ This repository contains the necessary codes to reproduce the figures presented 
 
 This folder contains the PHACTboost model and variants in the training set and TS1-5, which are alternative test sets used in the manuscript. The definition of these sets are given below:
 
-<p align="center">
-  <img src="[https://github.com/CompGenomeLab/PHACTboost_manuscript/blob/main/PHACTboost_Model/Picture1.png]">
-</p>
+![Picture1](https://github.com/CompGenomeLab/PHACTboost_manuscript/assets/68369488/3750f6e3-e1a7-499c-86a3-a5d883eb748d)
+
 
 ## Figure 1
 
