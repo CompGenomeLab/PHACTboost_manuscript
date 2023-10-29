@@ -4,13 +4,13 @@ This repository contains the necessary codes to reproduce the figures presented 
 
 ## Figure 1
 
-Figure 1A illustrates the evaluation of the PHACTboost algorithm's performance across all alternative test sets, revealing the enhancements achieved over the baseline PHACT model.
+Figure 1C illustrates the evaluation of the PHACTboost algorithm's performance across all alternative test sets, revealing the enhancements achieved over the baseline PHACT model, and two alternative models MSAboost and TREEboost. Both MSAboost and TREEboost employs the same machine learning algorithm but differing in their feature sets.
 
-Figure 1B is dedicated to exploring Feature Importance – Shapley Values for the PHACTboost Algorithm.
+Models of MSAboost and TREEboost is also provided in folders, [MSAboost](Figure1/Data/MSAboost) and [TREEboost](Figure1/Data/TREEboost), respectively.
 
-In Figure 1C, we present a comparative analysis between PHACTboost and MSAboost, both employing the same machine learning algorithm but differing in their feature sets. This comparison was conducted across the entire dataset and encompassed all alternative test sets.
+Figure 1D is dedicated to exploring Feature Importance – Shapley Values for the PHACTboost Algorithm.
 
-Both Figure 1A and 1C are generated using the script "Figure_1AC.R". The script for plotting Figure 1B is named "Figure_1B.R".
+Figure 1C are generated using the script "Figure_1C.R". The script for plotting Figure 1D is named "Figure_1D.R".
 
 The data provided in the [Figure1/Data](Figure1/Data) folder was generated using the script "Figure1_ProduceData.R".
 
