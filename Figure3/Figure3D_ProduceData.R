@@ -85,18 +85,18 @@ for (ind in 1:length(genes)){
   
   
   if (gene == "MSH2"){
-    dms <- readxl::read_xlsx("Data/DMS/MSH2_IDown.xlsx")
+    dms <- readxl::read_xlsx("Data/DMS/MSH2.xlsx")
     dms <- dms[-which(is.na(dms$`LOF score`)),]
     dms$vars <- dms$Variant
     dms$Score <- dms$`LOF score`
   } else if (gene == "A4") {
-    dms <- readxl::read_xlsx("Data/DMS/A4_IDown.xlsx")
+    dms <- readxl::read_xlsx("Data/DMS/A4.xlsx")
     dms$Pos <- dms$Pos + 671
     dms$vars <- paste(dms$WT_AA, dms$Pos, dms$Mut, sep = "")
     dms <- dms[-which(dms$Mut=="*"),]
     dms$Score <- dms$nscore
   } else if (gene == "SYUA") {
-    dms <- readxl::read_xlsx("Data/DMS/SYUA_Data.xlsx")
+    dms <- readxl::read_xlsx("Data/DMS/SYUA.xlsx")
     vect <- c()
     for (i in 2:141){
       sub <- dms[,i]
@@ -111,27 +111,27 @@ for (ind in 1:length(genes)){
     colnames(dms) <- c("vars", "Score")
     dms <- dms[-which(dms$Score=="NaN"),]
   } else if (gene == "VKOR1"){
-    dms <- read.csv("Data/DMS/VKOR1_IDown.csv")
+    dms <- read.csv("Data/DMS/VKOR1.csv")
     dms$vars <- dms$variant
     dms$Score <- dms$abundance_score
   } else if  (gene == "P53") {
-    dms <- readxl::read_xlsx("Data/DMS/P53_Giacomelli_IDown.xlsx")
+    dms <- readxl::read_xlsx("Data/DMS/P53_Giacomelli.xlsx")
     dms$vars <- dms$Allele
     dms$Score <- dms$`A549_p53WT_Nutlin-3_Z-score`
   } else if (gene == "PTEN") {
-    dms <- readxl::read_xlsx("/Users/nurdankuru/Desktop/PHACTboost_Files/PHACTboost_Datasets/DMS/PTEN_Data_Mighell.xlsx")
+    dms <- readxl::read_xlsx("Data/PTEN_Mighell.xlsx")
     dms$vars <- dms$`Variant (one letter)`
     dms$Score <- dms$Imputed_Score
     el <- which(dms$Score=="NA")
     dms <- dms[-el, ]
   } else if (gene == "ADRB2") {
-    dms <- readxl::read_xls("Data/DMS/ADRB2_IDown.xls")
+    dms <- readxl::read_xls("Data/DMS/ADRB2.xls")
     cond <- 0
     dms <- dms[which(dms$Condition==cond),]
     dms$vars <- paste("A", dms$Pos, dms$AA, sep = "")
     dms$Score <- dms$Norm
   } else  if (gene == "BRCA1") {
-    dms <- readxl::read_xlsx("Data/DMS/BRCA1_Findlay_IDown.xlsx")
+    dms <- readxl::read_xlsx("Data/DMS/BRCA1_Findlay.xlsx")
     dms <- dms[which(dms$consequence=="Missense"),]
     dms$vars <- paste(dms$aa_ref, dms$aa_pos, dms$aa_alt, sep = "")
     dms$Score <- dms$function.score.mean
