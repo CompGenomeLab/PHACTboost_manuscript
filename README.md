@@ -34,4 +34,6 @@ Finally, Part D is dedicated to comparing the average Spearman correlation betwe
 
 The data found in the [Figure3/Data](Figure3/Data) folder was generated using the script "Figure3_ProduceData.R.
 
+## PHACTboost_Model
 
+This folder contains the PHACTboost model and all the variants in TS1-5, which are alternative test sets used in the manuscript.
