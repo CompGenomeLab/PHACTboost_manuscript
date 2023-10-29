@@ -27,6 +27,8 @@ To generate Part A and B, you can use the script "Figure2A.R," and "Figure2B.R,"
 
 The necessary files are provided in the Figure2/Data folder.
 
+Figure 2C shows example of variants misclassified by VEST4 and REVEL but correctly predicted by PHACTboost. "Figure2C.R" is the script used to produce the subplots of phylogenetic tree and MSA.
+
 The data found in the [Figure2/Data](Figure2/Data) folder was generated using the script "Figure2_ProduceData.R.
 
 ## Figure 3
