@@ -25,7 +25,7 @@ Figure 2A displays AUROC comparisons between PHACTboost and tools reported in db
 
 To generate Part A and B, you can use the script "Figure2AB.R," which is located in the same directory.
 
-The necessary files are provided in the Figure2/Data folder.
+The necessary files are provided in the ../PHACTboost_Model/ and Figure2/Data folders.
 
 Figure 2C displays examples of variants misclassified by VEST4 and REVEL but correctly predicted by PHACTboost. The script "Figure2C.R" is used to produce the subplots of the phylogenetic tree and MSA.
 
