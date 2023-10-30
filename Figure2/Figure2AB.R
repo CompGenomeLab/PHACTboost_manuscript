@@ -30,7 +30,7 @@ my_theme2 <- theme_void() +
 
 load(sprintf("%s/TrainingSet.RData", data_path))
 load(sprintf("%s/TestSet.RData", data_path))
-load(sprintf("%s/dbNSFP_44a_TestSet.RData", data_path))
+dbnsfp_testset <- fread(sprintf("%s/dbNSFP_44a_TestSet.csv", data_path))
 
 train_set <- train
 test_set <- test
