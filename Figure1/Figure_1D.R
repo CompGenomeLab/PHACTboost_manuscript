@@ -4,6 +4,9 @@ library(SHAPforxgboost)
 library(data.table)
 library(ggplot2)
 
+save_path <- "./"
+data_path <- "../PHACTboost_Model/"
+
 my_theme1 =  theme_bw() +
   theme(panel.background = element_blank(), panel.grid.major = element_blank(), panel.grid.minor = element_blank()) + # no gridlines
   theme(panel.border = element_blank(), axis.line = element_line(color = "black"))+ # no border, just major axis
@@ -23,10 +26,10 @@ my_theme2 <- theme_void() +
         plot.background = element_rect(fill = "white", color = "white"), plot.margin = margin(c(0,0,5,0)))
 
 
-load("./TrainingSet.RData")
-load("./TestSet.RData")
-load("./PHACTboost_FinalModel_TrainTest/lightgbm_replication_1_prediction.RData")
-state <- lgb.load("./PHACTboost_FinalModel_TrainTest/lightgbm_replication_1_model.txt")
+load(sprintf("%s/TrainingSet.RData", data_path))
+load(sprintf("%s/TestSet.RData", data_path))
+load(sprintf("%s/PHACTboost_prediction.RData", data_path))
+state <- lgb.load(sprintf("%s/PHACTboost_model.txt", data_path))
 
 X_train <- train[, prediction$selected_features]
 X_test <- test[,prediction$selected_features]
@@ -42,7 +45,7 @@ mygreen <- rgb(100/256, 185/256, 80/256)
 mypurple <- rgb(75/256, 0, 130/256)
 
 
-pdf(file = "./Figure_1_D.pdf", width = 9.5, height = 5.5)
+pdf(file = sprintf("%s/Figure_1_D.pdf", save_path), width = 9.5, height = 5.5)
 sh <- shap.plot.summary.wrap2(shap_score = shap_values_pb, X = X_train, top_n = 20, dilute = 100) + my_theme1 +
   scale_color_continuous(low = mygreen, high = mypurple, labels = c("Low", "", "", "", "High")) +
   theme(legend.position = "right", legend.key.height = unit(1, "cm"), legend.key.width = unit(0.2, "cm"), legend.title = element_text(size = 11)) #+
