@@ -7,8 +7,8 @@ library(wesanderson)
 library(ggpubr)
 library(readxl)
 library(grid)
-
 save_path <- "./"
+data_path <- "../PHACTboost_Model/"
 my_theme1 =  theme_bw() +
   theme(panel.background = element_blank(), panel.grid.major = element_blank(), panel.grid.minor = element_blank()) + # no gridlines
   theme(panel.border = element_blank(), axis.line = element_line(color = "black"))+ # no border, just major axis
@@ -28,9 +28,9 @@ my_theme2 <- theme_void() +
         panel.grid.major.y = element_line(color = "grey90", size = 0.6),
         plot.background = element_rect(fill = "white", color = "white"), plot.margin = margin(c(0,0,5,0)))
 
-load("../data/Training_Test_Sets/TrainingSet.RData")
-load("../data/Training_Test_Sets/TestSet.RData")
-load("../data/dbNSFP_44a_TestSet.RData")
+load(sprintf("%s/TrainingSet.RData", data_path))
+load(sprintf("%s/TestSet.RData", data_path))
+load(sprintf("%s/dbNSFP_44a_TestSet.RData", data_path))
 
 train_set <- train
 test_set <- test
@@ -39,8 +39,8 @@ test_set$variant_info <- as.numeric(test_set$variant_info)
 
 dbnsfp_data <- dbnsfp_testset
 
-load("../PHACTboost_FinalModel_TrainTest/lightgbm_replication_1_prediction.RData")
-test_set$PHACTboost <- prediction$test_prediction
+prediction <- fread(sprintf("%s/PHACTboost_TestPrediction.csv", data_path))
+test_set$PHACTboost <- prediction$PHACTboost_Score
 test_set$chr_var_with_aa <- paste0(test_set$chr_vars, "-", test_set$Ref_AA, test_set$Alt_AA)
 
 test_set <- merge(test_set, dbnsfp_data[, c("chr_var_with_aa", colnames(dbnsfp_data)[grepl("rankscore", colnames(dbnsfp_data))])], by = "chr_var_with_aa", all.x = T)
@@ -109,6 +109,8 @@ for (method in methods) {
   
   method_scores <- as.numeric(pure_test_set[[method]])
   method_vars <- pure_test_set[, "variant_info"]
+  method_proteins <- pure_test_set[, "UNIPROTKB"]
+  
   pb_scores <- as.numeric(pure_test_set[, "PHACTboost"])
   
   elims <- !(is.na(as.numeric(method_scores)))
@@ -131,6 +133,7 @@ for (method in methods) {
   
   method_scores <- as.numeric(mixed_test_set[[method]])
   method_vars <- mixed_test_set[, "variant_info"]
+  method_proteins <- mixed_test_set[, "UNIPROTKB"]
   pb_scores <- as.numeric(mixed_test_set[, "PHACTboost"])
   
   elims <- !(is.na(as.numeric(method_scores)))
@@ -153,6 +156,7 @@ for (method in methods) {
   
   method_scores <- as.numeric(pmv_0.1_0.9[[method]])
   method_vars <- pmv_0.1_0.9[, "variant_info"]
+  method_proteins <- pmv_0.1_0.9[, "UNIPROTKB"]
   pb_scores <- as.numeric(pmv_0.1_0.9[, "PHACTboost"])
   
   elims <- !(is.na(as.numeric(method_scores)))
@@ -175,6 +179,7 @@ for (method in methods) {
   
   method_scores <- as.numeric(pmv_0.2_0.8[[method]])
   method_vars <- pmv_0.2_0.8[, "variant_info"]
+  method_proteins <- pmv_0.2_0.8[, "UNIPROTKB"]
   pb_scores <- as.numeric(pmv_0.2_0.8[, "PHACTboost"])
   
   elims <- !(is.na(as.numeric(method_scores)))
@@ -197,6 +202,7 @@ for (method in methods) {
   
   method_scores <- as.numeric(pmv_0.3_0.7[[method]])
   method_vars <- pmv_0.3_0.7[, "variant_info"]
+  method_proteins <- pmv_0.3_0.7[, "UNIPROTKB"]
   pb_scores <- as.numeric(pmv_0.3_0.7[, "PHACTboost"])
   
   elims <- !(is.na(as.numeric(method_scores)))
@@ -219,6 +225,7 @@ for (method in methods) {
   
   method_scores <- as.numeric(pmv_0.4_0.6[[method]])
   method_vars <- pmv_0.4_0.6[, "variant_info"]
+  method_proteins <- pmv_0.4_0.6[, "UNIPROTKB"]
   pb_scores <- as.numeric(pmv_0.4_0.6[, "PHACTboost"])
   
   elims <- !(is.na(as.numeric(method_scores)))
@@ -253,11 +260,11 @@ sel_methods_MV <- gsub("_rankscore|_raw_rankscore|_converted_rankscore", "", sel
 results_MV2$Method <- gsub("_rankscore|_raw_rankscore|_converted_rankscore", "", results_MV2$Method)
 results_MV2$Method <- factor(results_MV2$Method, levels = c(sel_methods_MV))
 
-load("../data/Training_Test_Sets/TS1_Upd.RData")
-load("../data/Training_Test_Sets/TS2_Upd.RData")
-load("../data/Training_Test_Sets/TS3_Upd.RData")
-load("../data/Training_Test_Sets/TS4_Upd.RData")
-load("../data/Training_Test_Sets/TS5_Upd.RData")
+TS1 <- fread(sprintf("%s/TS1.csv", data_path))
+TS2 <- fread(sprintf("%s/TS2.csv", data_path))
+TS3 <- fread(sprintf("%s/TS3.csv", data_path))
+TS4 <- fread(sprintf("%s/TS4.csv", data_path))
+TS5 <- fread(sprintf("%s/TS5.csv", data_path))
 
 training_proteins <- unique(train_set$UNIPROTKB)
 training_positions <- paste0(train_set$UNIPROTKB, "-", train_set$Positions)
@@ -276,183 +283,6 @@ pmv_0.1_0.9 <- pmv_0.1_0.9[pmv_0.1_0.9$prot_vars %in% hard_cases$prot_vars, ]
 pmv_0.2_0.8 <- pmv_0.2_0.8[pmv_0.2_0.8$prot_vars %in% hard_cases$prot_vars, ]
 pmv_0.3_0.7 <- pmv_0.3_0.7[pmv_0.3_0.7$prot_vars %in% hard_cases$prot_vars, ]
 pmv_0.4_0.6 <- pmv_0.4_0.6[pmv_0.4_0.6$prot_vars %in% hard_cases$prot_vars, ]
-
-methods <- selected_methods
-methods <- methods[!grepl("BayesDel|ClinPred|MetaRNN|MetaSVM|MetaLR|Eigen|LINSIGHT", methods)]
-methods <- methods[!grepl("M-CAP_rankscore|MutPred_rankscore", methods)]
-methods <- c(methods, "MV")
-
-results_MV_hard <- data.frame(Data_MV = NULL, Method = NULL, Delta_AUC = NULL, Delta_PR = NULL)
-data_size_hard <- data.frame(Data_MV = NULL, Method = NULL, N_Protein = NULL, Neutral = NULL, Pathogenic = NULL)
-supplementary_table_hardcases <- data.frame(Dataset = NULL, Tool = NULL, N_Protein = NULL, N_Neutral = NULL, N_Pathogenic = NULL, AUROC_Tool = NULL, 	AUROC_PHACTboost = NULL,	AUPR_Tool = NULL,	AUPR_PHACTboost = NULL)
-
-for (method in methods) {
-  method_scores <- as.numeric(hard_cases[[method]])
-  method_vars <- hard_cases[, "variant_info"]
-  method_proteins <- gsub("-.*", "", hard_cases$prot_vars)
-  pb_scores <- as.numeric(hard_cases[, "PHACTboost"])
-  
-  elims <- !(is.na(as.numeric(method_scores)))
-  var_table <- table(method_vars[elims])
-  prot_table <- method_proteins[elims]
-  df <- data.frame(Data_MV = "All", Method = method, N_protein = length(unique(prot_table)), Neutral = var_table[1], Pathogenic = var_table[2])
-  data_size_hard <- rbind(data_size_hard, df)
-  
-  method_auc <- auc(roc(method_scores[elims], as.factor(1 * (method_vars[elims] == 1))))
-  method_pr <- pr.curve(scores.class0 = method_scores[elims], weights.class0 = (1 * (method_vars[elims] == 1)), curve =T)$auc.integral
-  
-  pb_auc <- auc(roc(pb_scores[elims], as.factor(1 * (method_vars[elims] == 1))))
-  pb_pr <- pr.curve(scores.class0 = pb_scores[elims], weights.class0 = (1 * (method_vars[elims] == 1)), curve =T)$auc.integral
-  dat0 <- data.frame(Data_MV = "All", Method = method, Delta_AUC = method_auc - pb_auc, Delta_PR = method_pr - pb_pr)
-  df_res <- data.frame(Dataset = "All", Tool = method, N_Protein = length(unique(prot_table)), 
-                       N_Neutral = var_table[1], N_Pathogenic = var_table[2], AUROC_Tool = method_auc, 	
-                       AUROC_PHACTboost = pb_auc,	AUPR_Tool = method_pr,	AUPR_PHACTboost = pb_pr)
-  supplementary_table_hardcases <- rbind(supplementary_table_hardcases, df_res)
-  
-  
-  method_scores <- as.numeric(pure_test_set[[method]])
-  method_vars <- pure_test_set[, "variant_info"]
-  pb_scores <- as.numeric(pure_test_set[, "PHACTboost"])
-  
-  elims <- !(is.na(as.numeric(method_scores)))
-  var_table <- table(method_vars[elims])
-  prot_table <- method_proteins[elims]
-  df <- data.frame(Data_MV = "Pure", Method = method, N_protein = length(unique(prot_table)), Neutral = var_table[1], Pathogenic = var_table[2])
-  data_size_hard <- rbind(data_size_hard, df)
-  
-  method_auc <- auc(roc(method_scores[elims], as.factor(1 * (method_vars[elims] == 1))))
-  method_pr <- pr.curve(scores.class0 = method_scores[elims], weights.class0 = (1 * (method_vars[elims] == 1)), curve =T)$auc.integral
-  
-  pb_auc <- auc(roc(pb_scores[elims], as.factor(1 * (method_vars[elims] == 1))))
-  pb_pr <- pr.curve(scores.class0 = pb_scores[elims], weights.class0 = (1 * (method_vars[elims] == 1)), curve =T)$auc.integral
-  
-  dat1 <- data.frame(Data_MV = "Pure", Method = method, Delta_AUC = method_auc - pb_auc, Delta_PR = method_pr - pb_pr)
-  df_res <- data.frame(Dataset = "Pure", Tool = method, N_Protein = length(unique(prot_table)), 
-                       N_Neutral = var_table[1], N_Pathogenic = var_table[2], AUROC_Tool = method_auc, 	
-                       AUROC_PHACTboost = pb_auc,	AUPR_Tool = method_pr,	AUPR_PHACTboost = pb_pr)
-  supplementary_table_hardcases <- rbind(supplementary_table_hardcases, df_res)
-  
-  method_scores <- as.numeric(mixed_test_set[[method]])
-  method_vars <- mixed_test_set[, "variant_info"]
-  pb_scores <- as.numeric(mixed_test_set[, "PHACTboost"])
-  
-  elims <- !(is.na(as.numeric(method_scores)))
-  var_table <- table(method_vars[elims])
-  prot_table <- method_proteins[elims]
-  df <- data.frame(Data_MV = "Mixed", Method = method, N_protein = length(unique(prot_table)), Neutral = var_table[1], Pathogenic = var_table[2])
-  data_size_hard <- rbind(data_size_hard, df)
-  
-  method_auc <- auc(roc(method_scores[elims], as.factor(1 * (method_vars[elims] == 1))))
-  method_pr <- pr.curve(scores.class0 = method_scores[elims], weights.class0 = (1 * (method_vars[elims] == 1)), curve =T)$auc.integral
-  
-  pb_auc <- auc(roc(pb_scores[elims], as.factor(1 * (method_vars[elims] == 1))))
-  pb_pr <- pr.curve(scores.class0 = pb_scores[elims], weights.class0 = (1 * (method_vars[elims] == 1)), curve =T)$auc.integral
-  
-  dat2 <- data.frame(Data_MV = "Mixed", Method = method, Delta_AUC = method_auc - pb_auc, Delta_PR = method_pr - pb_pr)
-  df_res <- data.frame(Dataset = "Mixed", Tool = method, N_Protein = length(unique(prot_table)), 
-                       N_Neutral = var_table[1], N_Pathogenic = var_table[2], AUROC_Tool = method_auc, 	
-                       AUROC_PHACTboost = pb_auc,	AUPR_Tool = method_pr,	AUPR_PHACTboost = pb_pr)
-  supplementary_table_hardcases <- rbind(supplementary_table_hardcases, df_res)
-  
-  method_scores <- as.numeric(pmv_0.1_0.9[[method]])
-  method_vars <- pmv_0.1_0.9[, "variant_info"]
-  pb_scores <- as.numeric(pmv_0.1_0.9[, "PHACTboost"])
-  
-  elims <- !(is.na(as.numeric(method_scores)))
-  var_table <- table(method_vars[elims])
-  prot_table <- method_proteins[elims]
-  df <- data.frame(Data_MV = "0.1_0.9", Method = method, N_protein = length(unique(prot_table)), Neutral = var_table[1], Pathogenic = var_table[2])
-  data_size_hard <- rbind(data_size_hard, df)
-  
-  method_auc <- auc(roc(method_scores[elims], as.factor(1 * (method_vars[elims] == 1))))
-  method_pr <- pr.curve(scores.class0 = method_scores[elims], weights.class0 = (1 * (method_vars[elims] == 1)), curve =T)$auc.integral
-  
-  pb_auc <- auc(roc(pb_scores[elims], as.factor(1 * (method_vars[elims] == 1))))
-  pb_pr <- pr.curve(scores.class0 = pb_scores[elims], weights.class0 = (1 * (method_vars[elims] == 1)), curve =T)$auc.integral
-  
-  dat3 <- data.frame(Data_MV = "0.1_0.9", Method = method, Delta_AUC = method_auc - pb_auc, Delta_PR = method_pr - pb_pr)
-  df_res <- data.frame(Dataset = "0.1_0.9", Tool = method, N_Protein = length(unique(prot_table)), 
-                       N_Neutral = var_table[1], N_Pathogenic = var_table[2], AUROC_Tool = method_auc, 	
-                       AUROC_PHACTboost = pb_auc,	AUPR_Tool = method_pr,	AUPR_PHACTboost = pb_pr)
-  supplementary_table_hardcases <- rbind(supplementary_table_hardcases, df_res)
-  
-  method_scores <- as.numeric(pmv_0.2_0.8[[method]])
-  method_vars <- pmv_0.2_0.8[, "variant_info"]
-  pb_scores <- as.numeric(pmv_0.2_0.8[, "PHACTboost"])
-  
-  elims <- !(is.na(as.numeric(method_scores)))
-  var_table <- table(method_vars[elims])
-  prot_table <- method_proteins[elims]
-  df <- data.frame(Data_MV = "0.2_0.8", Method = method, N_protein = length(unique(prot_table)), Neutral = var_table[1], Pathogenic = var_table[2])
-  data_size_hard <- rbind(data_size_hard, df)
-  
-  method_auc <- auc(roc(method_scores[elims], as.factor(1 * (method_vars[elims] == 1))))
-  method_pr <- pr.curve(scores.class0 = method_scores[elims], weights.class0 = (1 * (method_vars[elims] == 1)), curve =T)$auc.integral
-  
-  pb_auc <- auc(roc(pb_scores[elims], as.factor(1 * (method_vars[elims] == 1))))
-  pb_pr <- pr.curve(scores.class0 = pb_scores[elims], weights.class0 = (1 * (method_vars[elims] == 1)), curve =T)$auc.integral
-  
-  dat4 <- data.frame(Data_MV = "0.2_0.8", Method = method, Delta_AUC = method_auc - pb_auc, Delta_PR = method_pr - pb_pr)
-  df_res <- data.frame(Dataset = "0.2_0.8", Tool = method, N_Protein = length(unique(prot_table)), 
-                       N_Neutral = var_table[1], N_Pathogenic = var_table[2], AUROC_Tool = method_auc, 	
-                       AUROC_PHACTboost = pb_auc,	AUPR_Tool = method_pr,	AUPR_PHACTboost = pb_pr)
-  supplementary_table_hardcases <- rbind(supplementary_table_hardcases, df_res)
-  
-  method_scores <- as.numeric(pmv_0.3_0.7[[method]])
-  method_vars <- pmv_0.3_0.7[, "variant_info"]
-  pb_scores <- as.numeric(pmv_0.3_0.7[, "PHACTboost"])
-  
-  elims <- !(is.na(as.numeric(method_scores)))
-  var_table <- table(method_vars[elims])
-  prot_table <- method_proteins[elims]
-  df <- data.frame(Data_MV = "0.3_0.7", Method = method, N_protein = length(unique(prot_table)), Neutral = var_table[1], Pathogenic = var_table[2])
-  data_size_hard <- rbind(data_size_hard, df)
-  
-  method_auc <- auc(roc(method_scores[elims], as.factor(1 * (method_vars[elims] == 1))))
-  method_pr <- pr.curve(scores.class0 = method_scores[elims], weights.class0 = (1 * (method_vars[elims] == 1)), curve =T)$auc.integral
-  
-  pb_auc <- auc(roc(pb_scores[elims], as.factor(1 * (method_vars[elims] == 1))))
-  pb_pr <- pr.curve(scores.class0 = pb_scores[elims], weights.class0 = (1 * (method_vars[elims] == 1)), curve =T)$auc.integral
-  
-  dat5 <- data.frame(Data_MV = "0.3_0.7", Method = method, Delta_AUC = method_auc - pb_auc, Delta_PR = method_pr - pb_pr)
-  df_res <- data.frame(Dataset = "0.3_0.7", Tool = method, N_Protein = length(unique(prot_table)), 
-                       N_Neutral = var_table[1], N_Pathogenic = var_table[2], AUROC_Tool = method_auc, 	
-                       AUROC_PHACTboost = pb_auc,	AUPR_Tool = method_pr,	AUPR_PHACTboost = pb_pr)
-  supplementary_table_hardcases <- rbind(supplementary_table_hardcases, df_res)
-  
-  method_scores <- as.numeric(pmv_0.4_0.6[[method]])
-  method_vars <- pmv_0.4_0.6[, "variant_info"]
-  pb_scores <- as.numeric(pmv_0.4_0.6[, "PHACTboost"])
-  
-  elims <- !(is.na(as.numeric(method_scores)))
-  var_table <- table(method_vars[elims])
-  prot_table <- method_proteins[elims]
-  df <- data.frame(Data_MV = "0.4_0.6", Method = method, N_protein = length(unique(prot_table)), Neutral = var_table[1], Pathogenic = var_table[2])
-  data_size_hard <- rbind(data_size_hard, df)
-  
-  method_auc <- auc(roc(method_scores[elims], as.factor(1 * (method_vars[elims] == 1))))
-  method_pr <- pr.curve(scores.class0 = method_scores[elims], weights.class0 = (1 * (method_vars[elims] == 1)), curve =T)$auc.integral
-  
-  pb_auc <- auc(roc(pb_scores[elims], as.factor(1 * (method_vars[elims] == 1))))
-  pb_pr <- pr.curve(scores.class0 = pb_scores[elims], weights.class0 = (1 * (method_vars[elims] == 1)), curve =T)$auc.integral
-  
-  dat6 <- data.frame(Data_MV = "0.4_0.6", Method = method, Delta_AUC = method_auc - pb_auc, Delta_PR = method_pr - pb_pr)
-  df_res <- data.frame(Dataset = "0.4_0.6", Tool = method, N_Protein = length(unique(prot_table)), 
-                       N_Neutral = var_table[1], N_Pathogenic = var_table[2], AUROC_Tool = method_auc, 	
-                       AUROC_PHACTboost = pb_auc,	AUPR_Tool = method_pr,	AUPR_PHACTboost = pb_pr)
-  supplementary_table_hardcases <- rbind(supplementary_table_hardcases, df_res)
-  
-  results_MV_hard <- rbind(results_MV_hard, dat0, dat1, dat2, dat3, dat4, dat5, dat6)
-}
-
-results_MV_hard$Data_MV <- factor(results_MV_hard$Data_MV, levels = c("All", "Pure", "Mixed", "0.1_0.9", "0.2_0.8", "0.3_0.7", "0.4_0.6"))
-
-sel_methods_hard <- results_MV_hard[results_MV_hard$Data_MV == "All", "Method"]
-results_MV_hard2 <- results_MV_hard[results_MV_hard$Method %in% c(sel_methods_hard), ]
-
-sel_methods_hard <- gsub("_rankscore|_raw_rankscore|_converted_rankscore", "", sel_methods_hard)
-results_MV_hard2$Method <- gsub("_rankscore|_raw_rankscore|_converted_rankscore", "", results_MV_hard2$Method)
-results_MV_hard2$Method <- factor(results_MV_hard2$Method, levels = c(sel_methods_hard))
 
 methods <- selected_methods
 methods <- methods[!grepl("BayesDel|ClinPred|MetaRNN|MetaSVM|MetaLR|Eigen|LINSIGHT", methods)]
@@ -489,6 +319,8 @@ for(method in methods){
   
   method_scores <- as.numeric(ts2[[method]])
   method_vars <- ts2[, "variant_info"]
+  method_proteins <- ts2[, "UNIPROTKB"]
+  
   pb_scores <- as.numeric(ts2[, "PHACTboost"])
   
   elims <- !(is.na(as.numeric(method_scores)))
@@ -512,6 +344,8 @@ for(method in methods){
   
   method_scores <- as.numeric(ts3[[method]])
   method_vars <- ts3[, "variant_info"]
+  method_proteins <- ts3[, "UNIPROTKB"]
+  
   pb_scores <- as.numeric(ts3[, "PHACTboost"])
   
   elims <- !(is.na(as.numeric(method_scores)))
@@ -540,6 +374,7 @@ for(method in methods){
   
   method_scores <- as.numeric(ts4[[method]])
   method_vars <- ts4[, "variant_info"]
+  method_proteins <- ts4[, "UNIPROTKB"]
   pb_scores <- as.numeric(ts4[, "PHACTboost"])
   
   elims <- !(is.na(as.numeric(method_scores)))
@@ -566,6 +401,7 @@ for(method in methods){
   
   method_scores <- as.numeric(ts5[[method]])
   method_vars <- ts5[, "variant_info"]
+  method_proteins <- ts5[, "UNIPROTKB"]
   pb_scores <- as.numeric(ts5[, "PHACTboost"])
   
   elims <- !(is.na(as.numeric(method_scores)))
@@ -600,23 +436,20 @@ sel_methods_dbnsfp <- gsub("_rankscore|_raw_rankscore|_converted_rankscore", "",
 results_dbnsfp2$Method <- gsub("_rankscore|_raw_rankscore|_converted_rankscore", "", results_dbnsfp2$Method)
 results_dbnsfp2$Method <- factor(results_dbnsfp2$Method, levels = c(sel_methods_dbnsfp))
 
-sel_methods_pmv <- intersect(sel_methods_MV, sel_methods_hard)
-sel_methods_pmv <- sel_methods_pmv[!grepl("M-CAP|MutPred", sel_methods_pmv)]
+sel_methods_pmv <- sel_methods_MV[!grepl("M-CAP|MutPred", sel_methods_MV)]
 
 sel_methods_dbnsfp <- sel_methods_dbnsfp[!grepl("M-CAP|MutPred", sel_methods_dbnsfp)]
 
 datasets <- c("TS1", "TS2", "TS3", "TS4", "TS5")
 results_MV2 <- results_MV2[results_MV2$Method %in% sel_methods_pmv, ]
-results_MV_hard2 <- results_MV_hard2[results_MV_hard2$Method %in% sel_methods_pmv, ]
 results_dbnsfp2 <- results_dbnsfp2[results_dbnsfp2$Method %in% sel_methods_dbnsfp, ]
 
 names(method_colors) <- sel_methods_pmv
 method_colors <- method_colors[sel_methods_pmv]
 results_MV2$Method <- factor(results_MV2$Method, levels = sel_methods_pmv)
-results_MV_hard2$Method <- factor(results_MV_hard2$Method, levels = sel_methods_pmv)
 results_dbnsfp2$Method <- factor(results_dbnsfp2$Method, levels = sel_methods_dbnsfp)
 
-ensembl_info <- read_xlsx(path = "./methods_info.xlsx")
+ensembl_info <- read_xlsx(path = sprintf("%s/methods_info.xlsx", data_path))
 ensembl_info <- as.data.frame(ensembl_info)
 ensembl_info[is.na(ensembl_info)] <- 0
 
@@ -667,42 +500,6 @@ pmv_auc <- ggplot(data=results_MV3, aes(x = Data_MV, y = Delta_AUC, group = Meth
   geom_segment(aes(x = x1, y = y1, xend = x2, yend = y2), linetype=2, lwd = 0.1, color = method_colors[legend_methods2], data = lines2, inherit.aes = F) + 
   labs(title = "TS1 Subsets")
 
-results_MV_hard3 <- results_MV_hard2
-results_MV_hard3 <- results_MV_hard3[results_MV_hard3$Method %in% unique_methods, ]
-
-results_MV_hard3$Method <- gsub("100way|470way|17way","", results_MV_hard3$Method)
-results_MV_hard3$Method <- gsub("SiPhy_29way_logOdds","SiPhy", results_MV_hard3$Method)
-results_MV_hard3$Method <- gsub("_coding","", results_MV_hard3$Method)
-
-results_MV_hard3$Data_MV <- gsub("_", "-",results_MV_hard3$Data_MV)
-results_MV_hard3 <- results_MV_hard3[results_MV_hard3$Data_MV %in% c("Pure", "Mixed", "0.1-0.9", "0.2-0.8"), ]
-results_MV_hard3$Data_MV <- factor(results_MV_hard3$Data_MV, levels = c("Pure", "Mixed", "0.1-0.9", "0.2-0.8", "0.3-0.7", "0.4-0.6"))
-
-legend_methods1 <- results_MV_hard3[results_MV_hard3$Data_MV == "Pure", "Method"] 
-legend_methods1 <- as.vector(legend_methods1[order(results_MV_hard3[results_MV_hard3$Data_MV == "Pure", "Delta_AUC"], decreasing = T)])
-
-legend_methods2 <- results_MV_hard3[results_MV_hard3$Data_MV == "0.2-0.8", "Method"] 
-legend_methods2 <- as.vector(legend_methods2[order(results_MV_hard3[results_MV_hard3$Data_MV == "0.2-0.8", "Delta_AUC"], decreasing = T)])
-lim1 <- 0.125
-lim2 <- -0.7
-seq_legend <- seq(lim1,lim2, length.out = length(unique_methods))
-
-lines1 <- data.frame(x1 = rep(0.60, length(unique_methods)), x2 = rep(0.95, length(unique_methods)), y1 = seq_legend, y2 = sort(results_MV_hard3[results_MV_hard3$Data_MV == "Pure", "Delta_AUC"], decreasing = T))
-lines2 <- data.frame(x1 = rep(4.05, length(unique_methods)), x2 = rep(4.40, length(unique_methods)), y1 = sort(results_MV_hard3[results_MV_hard3$Data_MV == "0.2-0.8", "Delta_AUC"], decreasing = T), y2 = seq_legend)
-
-pmv_hard_auc <- ggplot(data=results_MV_hard3, aes(x = Data_MV, y = Delta_AUC, group = Method, color = Method)) + my_theme2 + 
-  geom_hline(yintercept = 0, linetype = 2, color = "grey") + geom_line(lwd = 0.5, position = position_identity())  + geom_point(size = 1, position = position_identity()) + 
-  scale_x_discrete(breaks = c("Pure", "Mixed", "0.1-0.9", "0.2-0.8"), limits = c("Pure", "Mixed", "0.1-0.9", "0.2-0.8", "0.3-0.7", "0.4-0.6"),
-                   expand = expansion(mult = c(0, 0.7))) +
-  scale_y_continuous(limits = c(lim2, lim1)) +
-  scale_color_manual(values = method_colors) + labs(y = paste0("\u0394", "AUROC\n"), x = "") +
-  theme(legend.position = "none", axis.title.x = element_blank(), axis.text.x = element_text(angle = 45), 
-        legend.text = element_text(size = 11), axis.title.y = element_text(angle = 90), plot.margin = margin(1,0,0,0, "cm")) +
-  annotate("text", x = 4.5, y = seq_legend, color = method_colors[legend_methods2], 
-           label =  as.vector(legend_methods2), size = 3,
-           hjust = 0) +
-  geom_segment(aes(x = x1, y = y1, xend = x2, yend = y2), linetype=2, lwd = 0.1, colour = method_colors[legend_methods2], data = lines2, inherit.aes = F) + 
-  labs(title = "TS4 Subsets")
 
 legend_methods1 <- results_MV3[results_MV3$Data_MV == "Pure", "Method"] 
 legend_methods1 <- as.vector(legend_methods1[order(results_MV3[results_MV3$Data_MV == "Pure", "Delta_PR"], decreasing = T)])
@@ -729,36 +526,6 @@ pmv_aupr <- ggplot(data=results_MV3, aes(x = Data_MV, y = Delta_PR, group = Meth
            hjust = 0) +
   geom_segment(aes(x = x1, y = y1, xend = x2, yend = y2), linetype=2, lwd = 0.1, colour = method_colors[legend_methods2], data = lines2, inherit.aes = F) + 
   labs(title = "TS1 Subsets")
-pmv_aupr
-
-legend_methods1 <- results_MV_hard3[results_MV_hard3$Data_MV == "Pure", "Method"] 
-legend_methods1 <- as.vector(legend_methods1[order(results_MV_hard3[results_MV_hard3$Data_MV == "Pure", "Delta_PR"], decreasing = T)])
-
-legend_methods2 <- results_MV_hard3[results_MV_hard3$Data_MV == "0.2-0.8", "Method"] 
-legend_methods2 <- as.vector(legend_methods2[order(results_MV_hard3[results_MV_hard3$Data_MV == "0.2-0.8", "Delta_PR"], decreasing = T)])
-lim1 <- 0.125
-lim2 <- -0.7
-seq_legend <- seq(lim1,lim2, length.out = length(unique_methods))
-
-lines1 <- data.frame(x1 = rep(0.60, length(unique_methods)), x2 = rep(0.95, length(unique_methods)), y1 = seq_legend, y2 = sort(results_MV_hard3[results_MV_hard3$Data_MV == "Pure", "Delta_PR"], decreasing = T))
-lines2 <- data.frame(x1 = rep(4.05, length(unique_methods)), x2 = rep(4.40, length(unique_methods)), y1 = sort(results_MV_hard3[results_MV_hard3$Data_MV == "0.2-0.8", "Delta_PR"], decreasing = T), y2 = seq_legend)
-
-show_methods <- which(results_MV_hard3[results_MV_hard3$Data_MV == "Pure", "Method"] %in% c("VEST4", "MV"))
-pmv_hard_aupr <- ggplot(data=results_MV_hard3, aes(x = Data_MV, y = Delta_PR, group = Method, color = Method)) + my_theme2 + 
-  geom_hline(yintercept = 0, linetype = 2, color = "grey") + geom_line(lwd = 0.5, position = position_identity())  + geom_point(size = 1, position = position_identity()) + 
-  scale_x_discrete(breaks = c("Pure", "Mixed", "0.1-0.9", "0.2-0.8"), limits = c("Pure", "Mixed", "0.1-0.9", "0.2-0.8", "0.3-0.7", "0.4-0.6"),
-                   expand = expansion(mult = c(0, 0.7))) +
-  scale_y_continuous(limits = c(lim2, lim1)) +
-  scale_color_manual(values = method_colors) + labs(y = paste0("\u0394", "AUPR\n"), x = "") +
-  theme(legend.position = "none", axis.title.x = element_blank(), axis.text.x = element_text(angle = 45),
-        legend.text = element_text(size = 9), axis.title.y = element_text(angle = 90), plot.margin = margin(1,0,0,0, "cm")) +
-  annotate("text", x = 4.5, y = seq_legend, color = method_colors[legend_methods2], 
-           label =  as.vector(legend_methods2), size = 3,
-           hjust = 0) +
-  geom_segment(aes(x = x1, y = y1, xend = x2, yend = y2), linetype=2, lwd = 0.1, colour = method_colors[legend_methods2], data = lines2, inherit.aes = F) +
-  labs(title = "TS4 Subsets")
-
-
 
 data1 <- results_dbnsfp3[results_dbnsfp3$Dataset == "TS1", ]
 data1 <- data1[data1$Method %in% unique_methods, ]
@@ -766,8 +533,6 @@ data1$Method <- gsub("100way|470way|17way","", data1$Method)
 data1$Method <- gsub("SiPhy_29way_logOdds","SiPhy", data1$Method)
 data1$Method <- gsub("_coding","", data1$Method)
 data1$Method <- factor(data1$Method, levels = as.vector(data1[order(data1[data1$Dataset == "TS1", "Delta_AUC"], decreasing = T), "Method"]))
-
-
 
 gray_dark <- rgb(72/255,73/255,77/255)
 
@@ -905,7 +670,7 @@ r8 <- diff(c(min(data3$Delta_PR)*0.9, max(data3$Delta_PR, 0)))
 r9 <- diff(c(min(data4$Delta_PR)*0.9, max(data4$Delta_PR, 0)))
 r10 <- diff(c(min(data5$Delta_PR)*0.9, max(data5$Delta_PR, 0)))
 dbnsfp_pr <- ggarrange(g6, g7, g8, g9, g10, labels = c("A", "", "", "", ""), nrow = 5, ncol = 1, heights = c(r6*3.6, r7, r8, r9, r10))
-dbnsfp_pr
+
 
 space_plot <- ggplot() + theme_void()
 supp_fig1 <- ggarrange(dbnsfp_pr, space_plot, pmv_aupr, labels = c("A", "", "B"), ncol = 3, widths = c(4.4, 0.1, 4.1))
