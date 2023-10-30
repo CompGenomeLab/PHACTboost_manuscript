@@ -17,6 +17,7 @@ values_roc_cpt1 <- c()
 values_pr_alpmis <- c()
 values_pr_eve <- c()
 values_pr_cpt1 <- c()
+
 for (i in 1:5){
   chosen <- all_sets[[paste("ts", i, sep = "")]]
   
