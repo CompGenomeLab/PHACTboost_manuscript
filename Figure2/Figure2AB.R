@@ -8,7 +8,7 @@ library(ggpubr)
 library(readxl)
 library(grid)
 save_path <- "./"
-data_path <- "../PHACTboost_Model/"
+data_path <- "./Data/"
 my_theme1 =  theme_bw() +
   theme(panel.background = element_blank(), panel.grid.major = element_blank(), panel.grid.minor = element_blank()) + # no gridlines
   theme(panel.border = element_blank(), axis.line = element_line(color = "black"))+ # no border, just major axis
