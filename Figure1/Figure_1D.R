@@ -42,7 +42,7 @@ mygreen <- rgb(100/256, 185/256, 80/256)
 mypurple <- rgb(75/256, 0, 130/256)
 
 
-pdf(file = "./Figure_1_D.pdf", width = 4, height = 4)
+pdf(file = "./Figure_1_D.pdf", width = 9.5, height = 5.5)
 sh <- shap.plot.summary.wrap2(shap_score = shap_values_pb, X = X_train, top_n = 20, dilute = 100) + my_theme1 +
   scale_color_continuous(low = mygreen, high = mypurple, labels = c("Low", "", "", "", "High")) +
   theme(legend.position = "right", legend.key.height = unit(1, "cm"), legend.key.width = unit(0.2, "cm"), legend.title = element_text(size = 11)) #+
