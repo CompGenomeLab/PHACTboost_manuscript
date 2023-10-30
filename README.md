@@ -23,7 +23,7 @@ The data provided in the [Figure1/Data](Figure1/Data) folder was generated using
 
 Figure 2A displays AUROC comparisons between PHACTboost and tools reported in dbNSFP across TS1, TS2, TS3, TS4, and TS5, respectively.
 
-To generate Part A and B, you can use the script "Figure2A.R," and "Figure2B.R," which are located in the same directory, respectively.
+To generate Part A and B, you can use the script "Figure2AB.R," which is located in the same directory.
 
 The necessary files are provided in the Figure2/Data folder.
 
