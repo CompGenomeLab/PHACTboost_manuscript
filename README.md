@@ -42,7 +42,7 @@ Figure 3F highlights a pathogenic variation mislabeled by PHACTboost due to a la
 
 The data in the [Figure3/Data](Figure3/Data) folder was generated using the script 'Figure3_ProduceData.R.'
 
-# Citing this work
+## Citing this work
 
 Dereli, O.\*, Kuru, N.\*, Akkoyun, E., Bircan, A., Tastan, O.#, & Adebali, O.# (2024).  
 *Molecular Biology and Evolution*, msae136.  
