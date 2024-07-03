@@ -1,5 +1,7 @@
 This repository contains the necessary codes to reproduce the figures presented in the PHACTboost manuscript. Each figure's code and related data are provided in their respective named folders.
 
+The entire prediction scores for PHACTboost and PHACT are also made available at [Zenodo](https://doi.org/10.5281/zenodo.11281312).
+
 ## PHACTboost_Model
 
 This folder contains the PHACTboost model and variants in the training set and TS1-5, which are alternative test sets used in the manuscript.
