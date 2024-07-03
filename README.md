@@ -41,3 +41,12 @@ In Figure 3E, a Chi-square test examines whether there is a significant differen
 Figure 3F highlights a pathogenic variation mislabeled by PHACTboost due to a lack of consideration for coevolution. The code for generating the MSA and phylogenetic tree plots can be found in 'Figure3F.R.'
 
 The data in the [Figure3/Data](Figure3/Data) folder was generated using the script 'Figure3_ProduceData.R.'
+
+# Citing this work
+
+Dereli, O.\*, Kuru, N.\*, Akkoyun, E., Bircan, A., Tastan, O.#, & Adebali, O.# (2024).  
+*Molecular Biology and Evolution*, msae136.  
+\* Co-first authors  
+\# Co-corresponding authors 
+
+https://academic.oup.com/mbe/advance-article/doi/10.1093/molbev/msae136/7700170
